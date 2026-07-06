@@ -1,0 +1,28 @@
+Boot Process:
+
+BIOS / UEFI Phase (Hardware Initialization)
+What happens: When the power button is pressed, the system firmware (BIOS or UEFI) initializes.
+
+POST: It performs a Power-On Self-Test (POST) to check hardware components like RAM, CPU, and storage media.
+Hand-off: It searches for a bootable device based on the configured boot priority.
+Legacy BIOS: Looks for the Master Boot Record (MBR) on the first sector of the disk.
+UEFI: Looks for an EFI System Partition (ESP) and launches the registered EFI boot application.
+
+
+GRUB2 Bootloader Phase
+What happens: GRUB2 (Grand Unified Bootloader version 2) takes control.
+Configuration: It reads its configuration file (located at /boot/grub2/grub.cfg or /boot/efi/EFI/redhat/grub.cfg).
+User Interaction: It displays the boot menu, allowing you to select which kernel to boot or edit kernel parameters manually.
+Hand-off: Once a kernel is selected, GRUB2 loads the Kernel image and the Initramfs image into memory.
+
+Kernel Phase
+What happens: The kernel (vmlinuz) initializes the core hardware components (CPU, memory, storage controllers).
+Self-Decompression: The kernel is compressed to save disk space, so it extracts itself into memory first.
+
+Initramfs Phase (Initial RAM Filesystem)
+What happens: The initramfs (Initial RAM Filesystem) is a temporary, mini-root filesystem loaded into RAM.
+Drivers & Modules: It contains the necessary storage drivers, network drivers, and tools required to assemble LVM, decrypt partitions, or mount network filesystems.
+Switch Root: Once the real root filesystem (/) is found and mounted read-only, control shifts from the temporary memory filesystem to the real storage drive.
+
+vi /etc/default/grub
+/boot/grub2/grub.cfg
